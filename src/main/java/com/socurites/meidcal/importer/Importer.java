@@ -1,5 +1,7 @@
 package com.socurites.meidcal.importer;
 
+import com.socurites.meidcal.domain.Document;
+
 import java.io.File;
 import java.io.IOException;
 
