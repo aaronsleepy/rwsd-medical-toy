@@ -6,7 +6,7 @@ import lombok.Getter;
 
 import java.util.Map;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
 @Getter
 public class Document {
     private final Map<String, String> attributes;
