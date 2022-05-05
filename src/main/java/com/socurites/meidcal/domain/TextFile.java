@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Builder
@@ -28,5 +29,20 @@ public class TextFile {
                 .filter(l -> l.startsWith(prefix))
                 .findAny()
                 .ifPresent(l -> attributes.put(attributeName, l.substring(prefix.length())));
+    }
+
+    public int addLines(final int start, final Predicate<String> isEnd, final String attributeName) {
+        String accumulator = "";
+        int lineNumber;
+        for (lineNumber = start; lineNumber < lines.size(); lineNumber++) {
+            final String line = lines.get(lineNumber);
+            if (false == isEnd.test(line)) {
+                accumulator += line;
+                accumulator += "\n";
+            }
+        }
+
+        this.attributes.put(attributeName, accumulator.trim());
+        return lineNumber;
     }
 }
