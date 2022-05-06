@@ -2,14 +2,15 @@ package com.socurites.meidcal.main;
 
 import com.socurites.meidcal.domain.Attributes;
 import com.socurites.meidcal.domain.Document;
-import org.assertj.core.api.Assertions;
+import com.socurites.meidcal.exception.UnknownFileTypeException;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class DocumentManagementSystemTest {
     private static final String RESOURCES =
@@ -61,6 +62,24 @@ public class DocumentManagementSystemTest {
         assertTypeIs("IMAGE", document);
         assertAttributeEquals(document, Attributes.WIDTH, "320");
         assertAttributeEquals(document, Attributes.HEIGHT, "179");
+    }
+
+    @Test
+    public void shouldImportInvoiceAttributes() throws Exception
+    {
+        system.importFile(INVOICE);
+
+        final Document document = onlyDocument();
+
+        assertTypeIs("INVOICE", document);
+        assertAttributeEquals(document, Attributes.PATIENT, JOE_BLOGGS);
+        assertAttributeEquals(document, Attributes.AMOUNT, "$100");
+    }
+
+    @Test
+    public void shouldNotImportUnknownFile() throws IOException {
+        assertThatThrownBy(() -> system.importFile(RESOURCES + "unknown.txt"))
+                .isInstanceOf(UnknownFileTypeException.class);
     }
 
     private void assertAttributeEquals(final Document document, final String attributeName, final String expectedVaue) {
