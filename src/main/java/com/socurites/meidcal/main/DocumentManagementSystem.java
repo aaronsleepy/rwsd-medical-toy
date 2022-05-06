@@ -9,14 +9,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystemNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DocumentManagementSystem {
     private final List<Document> documents = new ArrayList<>();
     private final Map<String, Importer> extensionToImporter = new HashMap<>();
+    private final List<Document> documentsView = Collections.unmodifiableList(this.documents);
 
     public DocumentManagementSystem() {
         extensionToImporter.put("letter", new ImageImporter());
@@ -43,6 +41,9 @@ public class DocumentManagementSystem {
             final Document document = importer.importFile(file);
             documents.add(document);
         }
+    }
 
+    public List<Document> contents() {
+        return documentsView;
     }
 }
