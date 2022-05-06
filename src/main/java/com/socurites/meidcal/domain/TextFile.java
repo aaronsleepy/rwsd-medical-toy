@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@Builder
 @Getter
 public class TextFile {
     private final Map<String, String> attributes;
