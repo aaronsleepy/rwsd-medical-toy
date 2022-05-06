@@ -53,6 +53,16 @@ public class DocumentManagementSystemTest {
         assertAttributeEquals(document, Attributes.PATIENT, "Joe Bloggs");
     }
 
+    @Test
+    public void shouldImportImageAttributes() throws IOException {
+        system.importFile(XRAY);
+        final Document document = onlyDocument();
+
+        assertTypeIs("IMAGE", document);
+        assertAttributeEquals(document, Attributes.WIDTH, "320");
+        assertAttributeEquals(document, Attributes.HEIGHT, "179");
+    }
+
     private void assertAttributeEquals(final Document document, final String attributeName, final String expectedVaue) {
         assertThat(expectedVaue).isEqualTo(document.getAttribute(attributeName));
     }
