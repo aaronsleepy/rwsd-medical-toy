@@ -44,6 +44,15 @@ public class DocumentManagementSystemTest {
                         "United Kingdom");
     }
 
+    @Test
+    public void shouldImportReportAttributes() throws IOException {
+        system.importFile(REPORT);
+        final Document document = onlyDocument();
+
+        assertTypeIs("REPORT", document);
+        assertAttributeEquals(document, Attributes.PATIENT, "Joe Bloggs");
+    }
+
     private void assertAttributeEquals(final Document document, final String attributeName, final String expectedVaue) {
         assertThat(expectedVaue).isEqualTo(document.getAttribute(attributeName));
     }
