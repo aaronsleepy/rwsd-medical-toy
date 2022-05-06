@@ -2,8 +2,7 @@ package com.socurites.meidcal.main;
 
 import com.socurites.meidcal.domain.Document;
 import com.socurites.meidcal.exception.UnknownFileTypeException;
-import com.socurites.meidcal.importer.ImageImporter;
-import com.socurites.meidcal.importer.Importer;
+import com.socurites.meidcal.importer.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +16,10 @@ public class DocumentManagementSystem {
     private final List<Document> documentsView = Collections.unmodifiableList(this.documents);
 
     public DocumentManagementSystem() {
-        extensionToImporter.put("letter", new ImageImporter());
+        extensionToImporter.put("letter", new LetterImporter());
+        extensionToImporter.put("report", new ReportImporter());
+        extensionToImporter.put("invoice", new InvoiceImporter());
+        extensionToImporter.put("jpg", new ImageImporter());
     }
 
     public void importFile(final String path) throws IOException {
@@ -34,8 +36,8 @@ public class DocumentManagementSystem {
 
             final String extension = path.substring(separatorIndex + 1);
             final Importer importer = extensionToImporter.get(extension);
-            if (null != importer) {
-                throw new UnknownFileTypeException("For file: " + path);
+            if (null == importer) {
+                throw new UnknownFileTypeException("For extension: " + extension);
             }
 
             final Document document = importer.importFile(file);
