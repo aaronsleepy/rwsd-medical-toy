@@ -38,6 +38,8 @@ public class TextFile {
             if (false == isEnd.test(line)) {
                 accumulator += line;
                 accumulator += "\n";
+            } else {
+                break;
             }
         }
 
