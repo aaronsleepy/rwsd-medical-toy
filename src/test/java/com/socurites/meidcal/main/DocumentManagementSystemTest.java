@@ -30,8 +30,26 @@ public class DocumentManagementSystemTest {
         assertAttributeEquals(document, Attributes.PATH, LETTER);
     }
 
+    @Test
+    public void shouldImportLetterAttribute() throws IOException {
+        system.importFile(LETTER);
+        final Document document = onlyDocument();
+
+        assertTypeIs("LETTER", document);
+        assertAttributeEquals(document, Attributes.PATIENT, "Joe Bloggs");
+        assertAttributeEquals(document, Attributes.ADDRESS,
+                "123 Fake Street\n" +
+                        "Westminster\n" +
+                        "London\n" +
+                        "United Kingdom");
+    }
+
     private void assertAttributeEquals(final Document document, final String attributeName, final String expectedVaue) {
         assertThat(expectedVaue).isEqualTo(document.getAttribute(attributeName));
+    }
+
+    private void assertTypeIs(final String type, final Document document) {
+        assertAttributeEquals(document, Attributes.TYPE, type);
     }
 
     private Document onlyDocument() {
